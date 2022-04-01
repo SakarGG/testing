@@ -1,0 +1,36 @@
+
+    {% extends "baselayout.html" %}
+
+    {% block content %}
+    
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+
+    <!--heading-->
+    <div>
+        <h2 style="text-align:center;   ">Please scan the QR code of place you want to visit.</h2>
+    </div>
+
+    <!-- camera preview -->
+    <video id="preview" style=" margin-bottom:10px; width:28%; display: block; margin-left: auto; margin-right: auto; border: 3px solid #0A6CCB; " ></video>
+
+    <script type="text/javascript">
+      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+      scanner.addListener('scan', function (content) {
+        // document.getElementById("text").value = content
+        // once the qR code is scanced it is redirected to visitor dashboard for timer to start
+        window.location.replace("http://127.0.0.1:3000/timer");
+      });
+      Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+          scanner.start(cameras[0]);
+        } else {
+          console.error('No cameras found.');
+        }
+      }).catch(function (e) {
+        console.error(e);
+      });
+    </script>
+
+{% endblock content  %}
